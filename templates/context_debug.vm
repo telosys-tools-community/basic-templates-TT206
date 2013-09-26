@@ -1,0 +1,133 @@
+
+GENERATOR VARIABLES :
+=====================
+
+* GENERATOR 
+${DOLLAR}generator.name    = $generator.name
+${DOLLAR}generator.version = $generator.version 
+
+* CURRENT DATE AND TIME 
+${DOLLAR}today.date = $today.date
+${DOLLAR}today.time = $today.time
+${DOLLAR}today.date("dd/MM/yyyy") = $today.date("dd/MM/yyyy")
+${DOLLAR}today.time("HH:mm")      = $today.date("HH:mm")
+
+
+GENERATOR CONSTANTS FOR SPECIAL CHARACTERS :
+============================================
+${DOLLAR}DOLLAR = ${DOLLAR}
+${DOLLAR}SHARP  = ${SHARP}
+${DOLLAR}AMP    = ${AMP}
+${DOLLAR}QUOT   = ${QUOT}
+${DOLLAR}LT     = ${LT}
+${DOLLAR}GT     = ${GT}
+${DOLLAR}LBRACE = ${LBRACE}
+${DOLLAR}RBRACE = ${RBRACE}
+
+GENERATOR CONSTANTS USABLE AS METHODS PARAMETERS :
+==================================================
+${DOLLAR}const.KEY          =  $const.KEY
+${DOLLAR}const.NOT_KEY      =  $const.NOT_KEY
+
+${DOLLAR}const.TEXT         =  $const.TEXT
+${DOLLAR}const.NOT_TEXT     =  $const.NOT_TEXT
+
+${DOLLAR}const.IN_LINKS     =  $const.IN_LINKS
+${DOLLAR}const.NOT_IN_LINKS =  $const.NOT_IN_LINKS
+
+${DOLLAR}const.IN_SELECTED_LINKS      = $const.IN_SELECTED_LINKS
+${DOLLAR}const.NOT_IN_SELECTED_LINKS  = $const.NOT_IN_SELECTED_LINKS
+
+${DOLLAR}const.getKEY()     = $const.getKEY()
+${DOLLAR}const.getNOT_KEY() = $const.getNOT_KEY() 
+
+
+PROJECT VARIABLES :
+===================
+
+* PROJECT CONFIGURATION :
+${DOLLAR}project.packageForBean = $project.packageForBean
+
+Project packages ( predefined variables ) :
+${DOLLAR}ROOT_PKG   = "$ROOT_PKG"
+${DOLLAR}ENTITY_PKG = "$ENTITY_PKG"
+
+Project folders ( predefined variables ) :
+${DOLLAR}SRC      = "$SRC"
+${DOLLAR}RES      = "$RES"
+${DOLLAR}WEB      = "$WEB"
+${DOLLAR}TEST_SRC = "$TEST_SRC"
+${DOLLAR}TEST_RES = "$TEST_RES"
+${DOLLAR}DOC      = "$DOC"
+${DOLLAR}TMP      = "$TMP"
+
+Project variables ( ${DOLLAR}project.variables ) including predefined variables :
+#foreach( $var in $project.variables )
+ . ${DOLLAR}$var.name = $var.value
+#end
+
+
+ENTITY VARIABLES :
+==================
+
+* BEAN CLASS
+\$entity.name            = $entity.name
+\$entity.package         = $entity.package
+\$entity.superClass      = $entity.superClass
+\$entity.sqlTable        = $entity.sqlTable
+\$entity.databaseCatalog = $entity.databaseCatalog
+\$entity.databaseSchema  = $entity.databaseSchema
+
+* BEAN CLASS ATTRIBUTES ( \$entity.attributes )
+#set ($attributes = $entity.attributes )
+## array.size() is available since Velocity 1.6
+${DOLLAR}entity.attributes.size() = $entity.attributes.size() 
+${DOLLAR}attributes.size() = $attributes.size() 
+
+* BEAN CLASS JPA ANNOTATIONS ( \$entity.jpaAnnotations )
+$entity.jpaAnnotations(2)
+
+* BEAN CLASS AUTOINCREMTED PRIMARY KEY ?
+#if ( $entity.hasAutoIncrementedKey() )
+ ${DOLLAR}entity.autoincrementedKeyAttribute.databaseName = $entity.autoincrementedKeyAttribute.databaseName
+#else
+ No autoincremented primary key
+#end
+
+KEY ATTRIBUTES : 
+#foreach( $field in $entity.keyAttributes )
+ . $field.name : type = $field.type , auto-incremented = $field.isAutoIncremented()
+#end
+
+#foreach( $field in $entity.attributes )
+ ------------------------------
+ Field : $field.name
+ ------------------------------
+ Java :
+  \$field.name      = $field.name
+  \$field.type      = $field.type
+  \$field.getter    = $field.getter
+  \$field.setter    = $field.setter
+  \$field.label     = $field.label
+  \$field.inputType = $field.inputType
+##  \$field.isPrimitiveType() = $field.isPrimitiveType()   TODO
+ Java bean validation annotations :
+$field.beanValidationAnnotations(2)
+ Java bean validation annotations JSR303 only :
+$field.beanValidationAnnotationsJSR303(2)
+ JPA annotations :
+$field.jpaAnnotations(2)
+
+ Database :
+  \$field.isKeyElement() = $field.isKeyElement()
+  \$field.isAutoIncremented() = $field.isAutoIncremented()
+  \$field.isUsedInForeignKey() = $field.isUsedInForeignKey()
+  \$field.databaseName = $field.databaseName
+  \$field.databaseType = $field.databaseType
+  \$field.jdbcTypeCode = $field.jdbcTypeCode
+  ${DOLLAR}field.databaseSize = $field.databaseSize
+  ${DOLLAR}field.isDatabaseNotNull = $field.isDatabaseNotNull()
+  \$field.hasDatabaseDefaultValue() = $field.hasDatabaseDefaultValue()
+  \$field.databaseDefaultValue = $field.databaseDefaultValue
+
+#end
